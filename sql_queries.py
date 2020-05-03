@@ -46,6 +46,21 @@ DROP_SONGS_TABLE = """ DROP table if exists songs """
 DROP_ARTISTS_TABLE = """ DROP table if exists artists """
 DROP_TIME_TABLE = """ DROP table if exists time """
 
+#insert
+SONGS_TABLE_INSERT = """ INSERT INTO songs (song_id, title, artist_id, year, duration )
+                         VALUES(%s, %s, %s, %s, %s) """
+
+ARTISTS_TABLE_INSERT = """ INSERT INTO artists (artist_id, name, location, latitude, longitude)
+                           VALUES(%s, %s, %s, %s, %s)"""
+
+USERS_TABLE_INSERT = """ INSERT INTO users (user_id, first_name, last_name, gender, level)
+                         VALUES(%s, %s, %s, %s, %s)"""
+
+TIME_TABLE_INSERT = """ INSERT INTO table (start_time, hour, day, month, year, weekday)
+                        VALUES(%s, %s, %s, %s, %s, %s)"""
+
+
+
 DROP_QUERIES = [DROP_SONGPLAYS_TABLE,
                DROP_ARTISTS_TABLE,
                DROP_USERS_TABLE,
