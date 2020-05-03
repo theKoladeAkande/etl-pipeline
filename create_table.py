@@ -1,20 +1,8 @@
 import contextlib
 
 import psycopg2
-from connection_manger import dbconnection_manager
+from connection_manger import dbconnection_manager, psycopg2_error_handler
 import sql_queries
-
-def psycopg2_error_handler(fn):
-    """Function decorator for handling psycopg2 errors
-       :fn: a function that executes postgresql queries
-    """
-    def inner(*args, **kwargs):
-        try:
-            fn(*args, **kwargs)
-        except psycopg2.Error as e:
-            print(e)
-            raise
-    return inner
 
 @psycopg2_error_handler
 def data_definition(query: str, cursor, execute_many=False, data=None):
