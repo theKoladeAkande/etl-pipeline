@@ -1,7 +1,7 @@
 #Fact Table
 CREATE_SONGPLAYS_TABLE = """ CREATE TABLE IF NOT EXISTS  songplays
                             ( songplay_id SERIAL CONSTRAINT songplay_pk PRIMARY KEY,
-                            start_time TIMESTAMP ,
+                            start_time TIMESTAMP,
                             user_id INT,
                            level VARCHAR NOT NULL,
                             song_id VARCHAR,
@@ -36,6 +36,7 @@ CREATE_TIME_TABLE = """ CREATE TABLE IF NOT EXISTS  time
                             ( start_time TIMESTAMP CONSTRAINT time_pk PRIMARY KEY,
                               hour INT NOT NULL,
                               day INT NOT NULL,
+                              week INT NOT NULL,
                               month INT NOT NULL,
                               year INT NOT NULL,
                               weekday INT NOT NULL); """
@@ -51,13 +52,35 @@ SONGS_TABLE_INSERT = """ INSERT INTO songs (song_id, title, artist_id, year, dur
                          VALUES(%s, %s, %s, %s, %s) """
 
 ARTISTS_TABLE_INSERT = """ INSERT INTO artists (artist_id, name, location, latitude, longitude)
-                           VALUES(%s, %s, %s, %s, %s)"""
+                           VALUES(%s, %s, %s, %s, %s)
+                           ON CONFLICT (artist_id) DO UPDATE SET
+                          location = EXCLUDED.location,
+                          latitude = EXCLUDED.latitude,
+                          longitude = EXCLUDED.longitude"""
 
 USERS_TABLE_INSERT = """ INSERT INTO users (user_id, first_name, last_name, gender, level)
-                         VALUES(%s, %s, %s, %s, %s)"""
+                         VALUES(%s, %s, %s, %s, %s)
+                         ON CONFLICT (user_id) DO UPDATE SET level = EXCLUDED.level;"""
 
-TIME_TABLE_INSERT = """ INSERT INTO table (start_time, hour, day, month, year, weekday)
-                        VALUES(%s, %s, %s, %s, %s, %s)"""
+TIME_TABLE_INSERT = """ INSERT INTO time (start_time, hour, day, week, month, year, weekday)
+                        VALUES(to_timestamp(%s), %s, %s, %s, %s, %s, %s)
+                        ON CONFLICT (start_time) DO NOTHING"""
+
+SONGPLAYS_TABLE_INSERT = """INSERT INTO songplays(
+                          start_time,
+                          user_id,
+                          level,
+                          song_id,
+                          artist_id,
+                          session_id,
+                          location,
+                          user_agent)
+                          VALUES (to_timestamp(%s),%s,%s,%s,%s,%s,%s,%s)"""
+
+#select
+SONG_SELECT = """SELECT songs.song_id , artists.artist_id FROM songs JOIN artists
+              ON songs.artist_id = artists.artist_id
+              where title=%s AND name=%s AND duration=%s;"""
 
 
 
