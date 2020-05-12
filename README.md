@@ -24,6 +24,6 @@ fact and dimension tables with sql queries.
 ## File Structure
 1. *sql_queries.py* contains the sql queries used.
 2. *create_tables.py* resets the database(drops and create table).
-3. *connection_manger.py* contains context manager to help manage cursors and connections to the database
+3. *connection_manger.py* contains context manager to help manage cursors and connections to the database, including decorators for error handling.
 4. *etl.py* extracts, transforms and loads data  into tables.
 5. *data*  folder, contains the data used.
